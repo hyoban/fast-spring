@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 @RequiredArgsConstructor
-@RestControllerAdvice(basePackages = "com.example.demo")
+@RestControllerAdvice(basePackages = "cc.hyoban.fastspring")
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
   private final ObjectMapper objectMapper;
