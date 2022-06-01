@@ -1,0 +1,8 @@
+server:
+  port: 8888
+
+springdoc:
+  swagger-ui:
+    path: /docs
+    show-extensions: true
+    show-common-extensions: true
