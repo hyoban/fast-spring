@@ -1,0 +1,8 @@
+site_name: Fast Spring
+theme:
+  language: zh
+  name: material
+  features:
+    - navigation.top
+markdown_extensions:
+  - pymdownx.superfences
