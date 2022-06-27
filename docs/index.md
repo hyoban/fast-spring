@@ -76,7 +76,7 @@ return new OpenAPI().info(info);
 如果我们输入了不符合要求的参数，它会弹框提示，而非显示服务器返回的错误信息。
 而如果希望显示这些校验注解的信息，需要在配置文件中开启插件。
 
-你可以参考作者在 [Issues 中的回复][7]
+> 你可以参考作者在 [Issues 中的回复][7]
 
 ## 验证
 
@@ -96,6 +96,117 @@ return new OpenAPI().info(info);
 ## 依赖注入
 
 关于此部分，Spring 本身就已经做的很好了。我们将在后续的章节中展开介绍。
+
+## 前置概念
+
+1. container / spring application context 用于创建和管理应用组件
+	1. 在容器基础上 spring 和一些其他的库提供了各种现代程序开发所需要的功能
+2. components / beans 被组装到一起来构建一个完整的应用程序
+	1. xml configuration
+	2. java-based configuration class
+		1. `@Configuration` 告诉 spring 这个类是用于提供组件到容器
+		2. `@Bean` 标记方法，表示该方法返回的类应该作为组件被添加到容器
+			1. 默认情况下，bean 的 id 和方法名相同
+		3. 相比 xml 的配置方式，注解的方式有着更好的类型安全和可重构性
+		4. 大部分时间不需要手动来知名配置，sping 可以自动配置
+3. dependency injection 由容器来创建和维护所有的组件，然后将组件注入到需要它们的地方
+	1. constructor argyments
+	2. property accessor methods
+4. automatic configuration
+	1. component scanning 从应用的 classpath 自动发现组件并创建到容器
+	2. autowiring 自动注入组件到其他需要它的组件的位置
+	3. spring boot 根据你的 classpath，环境变量，和其他因素来进行自动的配置和组装
+		1. 大量减少了显示的配置，不管是 xml 还是 java 注解
+		2. 尽可能的使用自动配置，并且抛弃 xml 的配置方式
+
+## 文件结构
+
+1. 典型的 maven 或者 gradle 项目，包含源码，测试代码，和资源目录
+2. maven 相关
+	1. `mvnw` 和 `mvnw.cmd` 是 maven wrapper 的脚本，可以让你无需提前安装 maven
+	2. `pom.xml` maven 构建的具体细节
+		1. `<parent>` 定义依赖的父 pom 文件，通过指定 `spring-boot-starter-parent` 的版本，我们可以将其他相关依赖的版本交由它来确定
+		2. `<dependencies>` 定义我们需要使用的依赖
+			1. starter 结尾的依赖项 id，表明它本身不包含实际的代码，只是组合其他的库
+				1. 你的依赖项会减少很多
+				2. 语义化的确定依赖能给我们带来的功能
+				3. 你不必手动去指定各个依赖的版本，spring boot 会帮你确定各个合适的版本
+		3. `<plugins>` 构建的插件，spring boot 插件提供了很多功能
+			1. 使用 maven 来启动程序
+			2. 确保所有的依赖库会被打包到 JAR 文件，以及在运行时处于 classpath 下
+			3. 在 manifest 文件中指定了项目启动的主类
+3. spring 相关
+	1. `application.properties` 指定项目配置
+	2. `static` `templates`
+	3. 程序启动
+		1. `@SpringBootApplication`
+			1. `@SpringBootConfiguration` 一个特定形式的 `@Configuration` 注解
+				1. 你可以添加一两个简单的配置到启动类下
+				2. 创建更多的配置类来提供更多的不能自动配置的的东西
+			2. `@EnableAutoConfiguration` 启用 spring boot 的自动配置功能
+			3. `@ComponentScan` 启动组件扫描，这使得 spring 能够自动发现被标记为组件的类，并且注册到容器
+		2. `main()`
+			1. 在 JAR 文件被执行时运行此方法，样板代码
+			2. `run()` 指定真正的组装程序的代码，创建 spring application context
+			3. 传入的配置类参数不必和启动类相同，但这是最常见和方便的选择
+			4. 传入命令行参数到该方法
+	4. 程序测试
+		1. 直接打包运行来测试
+			1. `./mvnw package`
+			2. `java -jar target/taco-cloud-0.0.1-SNAPSHOT.jar`
+			3. `./mvnw spring-boot:run`
+		2. 编写测试代码
+			1. 即使测试代码为空，我们也能通过运行测试代码来判断程序是否能够争取执行
+			2. `@SpringBootTest` 告诉 JUnit 来使用 spring boot 的能力来初始化测试
+				1. `@ExtendWith(SpringExtension.class)` 添加 spring 测试的能力到 JUnit 5
+				2. 可以理解为执行了 `SpringApplication.run()`
+			3. `./mvnw test`
+
+## 构建和运行程序
+
+1. Tomcat 是 spring boot 程序的一部分，而无需将代码部署到 Tomcat
+2. spring boot 的自动配置库，监测到我们使用的依赖项，然后使得 spring application context 来启用和配置对应的功能
+3. Spring Boot DevTools
+	1. 不是一个 IDE 工具
+	2. 开发时启用，生产环境下自动禁用
+	4. 自动禁用模板缓存
+		1. 模板文件默认会被程序缓存，这会导致修改模板文件无法在浏览器中的到更新
+		2. 如果你希望变化时自动刷新浏览器，就需要额外安装浏览器插件
+	5. h2 数据库终端
+		1. http://localhost:8080/h2-console
+		2. 好像没啥用，IDEA 的功能更强
+
+## spring 生态介绍
+
+1. core spring
+	1. spring 宇宙的基础，提供 container 和 di 的框架
+	2. spring MVC，REST APIs
+	3. 基础的数据库支持 JdbcTemplate
+	4. reactive program, Spring WebFlux
+2. Spring Boot
+	1. starter dependencies，依赖管理
+	2. autoconfiguration
+	3. Actuator 监控运行时程序的内部状态
+	4. 灵活地指定环境配置
+	5. 在核型库上额外的测试支持
+	6. Spring boot cli 使用 groovy 脚本来编写程序
+3. Spring Data
+	1. 使用 Java 接口来定义数据模型
+	2. 使用语义化的函数来进行 CRUD 的操作
+	3. 支持包括关系型，文档型，graph 等类型的数据库
+4. Spring Security
+	1. 鉴别，鉴权，API 安全
+5. Spring Integration 和 Spring Batch
+	1. 整合其他程序
+	2. 前者处理实时的整合，后者按照批次和触发器来进行整合处理
+6. Spring Cloud
+	1. 微服务，即组合多个单独部署的程序
+	2. [Cloud Native Spring in Action](http://www.manning.com/books/cloud-native-spring-in-action)
+7. Spring Native
+	1. 将 Spring Boot 项目编译程序可执行文件
+	2. GraalVM native-image compiler
+	3. 非常快的启动和很小的占用空间
+
 
 [1]: https://spring.io/
 [2]: https://fastapi.tiangolo.com/
