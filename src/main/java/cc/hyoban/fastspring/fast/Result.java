@@ -18,6 +18,7 @@ public class Result<T> {
     result.setCode(code);
     result.setData(data);
     result.setMessage(message);
+    result.setTimestamp(System.currentTimeMillis());
     return result;
   }
 
@@ -25,21 +26,13 @@ public class Result<T> {
     int code,
     T data
   ) {
-    Result<T> result = new Result<>();
-    result.setCode(code);
-    result.setData(data);
-    result.setMessage("调用成功");
-    return result;
+    return Result.of(code, data, "调用成功");
   }
 
   public static <T> Result<T> fail(
     int code,
     String message
   ) {
-    Result<T> result = new Result<>();
-    result.setCode(code);
-    result.setData(null);
-    result.setMessage(message);
-    return result;
+    return Result.of(code, null, message);
   }
 }
