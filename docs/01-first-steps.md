@@ -45,7 +45,8 @@ Spring 能够自动扫描你的代码，将其注册到该到的位置。
 
 关于 controller，实际上它是对于 java web 中的 servlet 进行了封装。
 在我们的后端程序中，它的作用是接收发来的请求，访问对应的 service 以得到结果，返回回去。
-这里不会介绍 servlet 太多，你可以自行搜索学习。
+
+也就是说，RestController 负责定义请求的路径，调用具体的处理方法，返回处理结果给客户端。
 
 ## 使用不同的 HTTP 方法
 
@@ -54,3 +55,22 @@ Spring 能够自动扫描你的代码，将其注册到该到的位置。
 
 为了方便，我们通常会使用对应特定 http 方法的注解，比如 `@GetMapping` 等价于 `@RequestMapping(method = RequestMethod.GET)`。
 而 `@RequestMapping` 的作用通常是被置于类上，通过指定 path 来指定该类中方法所处理的请求的共同前缀。
+
+这里的 HTTP 方法有下列之一：
+
+- POST 创建数据
+- GET 读取数据
+- PUT 更新数据
+- DELETE 删除数据
+
+...以及更少见的几种：
+
+- OPTIONS
+- HEAD
+- PATCH
+- TRACE
+
+## 返回内容
+
+此前的准备中，我们已经统一了返回的格式和异常的捕获处理。
+所以，你可以直接返回一个 Map，对象，字符串，或是直接抛出异常，都能够被很好的序列化为 JSON 格式返回。
