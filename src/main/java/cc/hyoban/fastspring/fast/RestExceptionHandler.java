@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class RestExceptionHandler {
 
+  private static final String BAD_REQUEST_MSG = "客户端请求参数错误";
+
   @ExceptionHandler(Exception.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public Result<String> exception(Exception e) {
     return Result.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
   }
-
-  private static final String BAD_REQUEST_MSG = "客户端请求参数错误";
 
   // <1> 处理 form data方式调用接口校验失败抛出的异常
   @ExceptionHandler(BindException.class)

@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +13,8 @@ import org.springframework.core.env.Environment;
 @SpringBootApplication
 public class FastSpringApplication {
 
+  private final Environment env;
+
   public FastSpringApplication(Environment env) {
     this.env = env;
   }
@@ -23,8 +23,6 @@ public class FastSpringApplication {
     SpringApplication.run(FastSpringApplication.class, args);
 
   }
-
-  private final Environment env;
 
   @Bean
   public OpenAPI openAPI() {
