@@ -1,10 +1,10 @@
 package cc.hyoban.fastspring.fast.demo;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +12,16 @@ enum ModelName {
   alexnet,
   resnet,
   lenet,
+}
+
+record Item(
+  @NotBlank
+  String name,
+  String description,
+  @NotNull
+  Float price,
+  Float tax
+) {
 }
 
 @RestController
@@ -50,6 +60,11 @@ public class Controller {
     @RequestParam(defaultValue = "10") Integer limit
   ) {
     return fakeItemsDb.subList(skip, skip + limit > fakeItemsDb.size() ? fakeItemsDb.size() : limit);
+  }
+
+  @PostMapping("/items/")
+  public Item createItem(@Validated @RequestBody Item item) {
+    return item;
   }
 
 }
