@@ -30,7 +30,7 @@ public class RestExceptionHandler {
   public Result bindExceptionHandler(BindException e) {
     List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
     List<String> collect = fieldErrors.stream()
-      .map(o -> o.getDefaultMessage())
+      .map(o -> o.getField() + " " + o.getDefaultMessage())
       .collect(Collectors.toList());
     return Result.of(HttpStatus.BAD_REQUEST.value(), collect, BAD_REQUEST_MSG);
   }
@@ -40,7 +40,7 @@ public class RestExceptionHandler {
   public Result methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
     List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
     List<String> collect = fieldErrors.stream()
-      .map(o -> o.getDefaultMessage())
+      .map(o -> o.getField() + " " + o.getDefaultMessage())
       .collect(Collectors.toList());
     return Result.of(HttpStatus.BAD_REQUEST.value(), collect, BAD_REQUEST_MSG);
   }
@@ -50,7 +50,7 @@ public class RestExceptionHandler {
   public Result constraintViolationExceptionHandler(ConstraintViolationException e) {
     Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
     List<String> collect = constraintViolations.stream()
-      .map(o -> o.getMessage())
+      .map(ConstraintViolation::getMessage)
       .collect(Collectors.toList());
     return Result.of(HttpStatus.BAD_REQUEST.value(), collect, BAD_REQUEST_MSG);
   }
