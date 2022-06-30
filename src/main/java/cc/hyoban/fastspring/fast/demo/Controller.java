@@ -62,6 +62,7 @@ public class Controller {
     return fakeItemsDb.subList(skip, skip + limit > fakeItemsDb.size() ? fakeItemsDb.size() : limit);
   }
 
+  // 04 body
   @PostMapping("/items/")
   public Item createItem(@Validated @RequestBody Item item) {
     return item;
