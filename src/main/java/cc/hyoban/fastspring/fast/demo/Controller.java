@@ -1,5 +1,6 @@
 package cc.hyoban.fastspring.fast.demo;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,22 +50,40 @@ public class Controller {
   }
 
   @GetMapping("/models/{modelName}")
-  public Map<String, Object> getModel(@PathVariable ModelName modelName) {
+  public Map<String, Object> getModel(
+    @PathVariable ModelName modelName
+  ) {
     return Map.of("model_name", modelName.name());
   }
 
   // 03 query-params
   @GetMapping("/items")
   public List<Map<String, String>> readItem(
-    @RequestParam(defaultValue = "0") Integer skip,
-    @RequestParam(defaultValue = "10") Integer limit
+    @Parameter(
+      description = "Query string for the items to search in the database that have a good match",
+      deprecated = true,
+      example = "2",
+      hidden = true
+    )
+    @RequestParam(
+      name = "skip",
+      defaultValue = "0"
+    )
+    Integer skip,
+    @RequestParam(defaultValue = "10") Integer limit,
+    @RequestParam(defaultValue = "foo,bar") List<String> q
   ) {
+    System.out.println(q);
     return fakeItemsDb.subList(skip, skip + limit > fakeItemsDb.size() ? fakeItemsDb.size() : limit);
   }
 
   // 04 body
   @PostMapping("/items/")
-  public Item createItem(@Validated @RequestBody Item item) {
+  public Item createItem(
+    @Validated
+    @RequestBody
+    Item item
+  ) {
     return item;
   }
 

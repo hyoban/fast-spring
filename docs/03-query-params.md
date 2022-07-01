@@ -22,6 +22,11 @@ public List<Map<String, String>> readItem(
 查询参数应当是可选的，指定 defaultValue 是一个好习惯。
 如果你明确需要必填的查询参数，可以去除它，该注解默认配置 required 属性为 true。
 
+有可能你希望查询参数的命名为 kebab-case 风格，但这和 Java 变量的 PascalCase 不一致。
+所以你需要通过该注解的 name 参数来给该查询参数提供别名。
+
+## Bool 类型参数
+
 前面一节中提到的通过指定参数类型来进行校验，同样也适用于此处。
 得益于 Spring Web 对查询参数的自动转换，指定为 Boolean 类型的参数可以被自动转换。
 
@@ -29,7 +34,16 @@ public List<Map<String, String>> readItem(
 @RequestParam(defaultValue = "true") Boolean isShort
 ```
 
-你可以声明任意数量的路径参数和查询参数，它们通过被冠以的注解来区别。
+## 查询参数列表
+
+你还可以将查询参数的类型设置为 List，这样你可以传递多个查询参数。
+
+```java
+@RequestParam(defaultValue = "foo,bar") List<String> q
+```
+
+比如上面可以匹配的地址为 `http://localhost:8000/items/?q=foo&q=bar`。
+你同样可以为其制定默认值，以逗号分隔 List 中的每个值。
 
 ## 参数校验
 
@@ -42,3 +56,17 @@ public List<Map<String, String>> readItem(
 比如这个例子，使用 `@Size` 注解限制了字符串参数 q 的最大长度为 5。
 更多校验相关可用的注解可以查看 `javax.validation.constraints` 包下的内容，
 你只需要在代码导入部分，点击 constraints 位置跳转即可定位。
+
+## 补充更多接口信息
+
+```java
+@Parameter(
+  description = "Query string for the items to search in the database that have a good match",
+  deprecated = true,
+  example = "2",
+  hidden = true
+)
+```
+
+你可以借助 `Parameter` 注解来给 API 文档中的查询参数提供额外的信息。
+比如对参数进行描述或者提供一个示例，又或是标记它为一个废弃的接口，再就是不将该参数信息暴露在文档中。
