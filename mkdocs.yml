@@ -33,10 +33,16 @@ extra:
       link: https://github.com/hyoban
     - icon: fontawesome/solid/paper-plane
       link: mailto:hi@hyoban.cc
+
 copyright: Copyright &copy; 2022 - present Hyoban
+
 repo_url: https://github.com/hyoban/fast-spring/
 repo_name: hyoban/fast-spring
+
 plugins:
   - git-revision-date-localized:
       enable_creation_date: true
   - search
+
+extra_css:
+  - stylesheets/extra.css
