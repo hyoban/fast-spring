@@ -1,8 +1,42 @@
 site_name: Fast Spring
 theme:
   language: zh
+  font:
+    text: Noto Sans
+    code: Fira Code
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      primary: blue grey
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      primary: blue grey
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
   name: material
   features:
     - navigation.top
 markdown_extensions:
   - pymdownx.superfences
+extra:
+  social:
+    - icon: fontawesome/brands/github 
+      link: https://github.com/hyoban
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:hi@hyoban.cc
+copyright: Copyright &copy; 2022 - present Hyoban
+repo_url: https://github.com/hyoban/fast-spring/
+repo_name: hyoban/fast-spring
+plugins:
+  - git-revision-date-localized:
+      enable_creation_date: true
+  - search
