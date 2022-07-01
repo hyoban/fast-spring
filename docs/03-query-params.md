@@ -44,17 +44,3 @@ public List<Map<String, String>> readItem(
 
 比如上面可以匹配的地址为 `http://localhost:8000/items/?q=foo&q=bar`。
 你同样可以为其制定默认值，以逗号分隔 List 中的每个值。
-
-## 补充更多接口信息
-
-```java
-@Parameter(
-  description = "Query string for the items to search in the database that have a good match",
-  deprecated = true,
-  example = "2",
-  hidden = true
-)
-```
-
-你可以借助 `Parameter` 注解来给 API 文档中的查询参数提供额外的信息。
-比如对参数进行描述或者提供一个示例，又或是标记它为一个废弃的接口，再就是不将该参数信息暴露在文档中。

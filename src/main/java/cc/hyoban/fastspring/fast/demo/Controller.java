@@ -1,6 +1,8 @@
 package cc.hyoban.fastspring.fast.demo;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +18,15 @@ enum ModelName {
 }
 
 record Item(
+  @Schema(example = "Foo")
   @NotBlank
   String name,
+  @Schema(example = "A very nice Item")
   String description,
+  @Schema(example = "35.4")
   @NotNull
   Float price,
+  @Schema(example = "3.2")
   Float tax
 ) {
 }
@@ -62,8 +68,13 @@ public class Controller {
     @Parameter(
       description = "Query string for the items to search in the database that have a good match",
       deprecated = true,
-      example = "2",
-      hidden = true
+      examples = {@ExampleObject(
+        name = "foo",
+        value = "2"
+      ), @ExampleObject(
+        name = "bar",
+        value = "4"
+      )}
     )
     @RequestParam(
       name = "skip",
