@@ -45,18 +45,6 @@ public List<Map<String, String>> readItem(
 比如上面可以匹配的地址为 `http://localhost:8000/items/?q=foo&q=bar`。
 你同样可以为其制定默认值，以逗号分隔 List 中的每个值。
 
-## 参数校验
-
-给你的 controller 加上 `@Validated` 注解，然后就能使用相应的校验注解来限制参数。
-
-```java
-@RequestParam @Size(max = 5) String q
-```
-
-比如这个例子，使用 `@Size` 注解限制了字符串参数 q 的最大长度为 5。
-更多校验相关可用的注解可以查看 `javax.validation.constraints` 包下的内容，
-你只需要在代码导入部分，点击 constraints 位置跳转即可定位。
-
 ## 补充更多接口信息
 
 ```java
