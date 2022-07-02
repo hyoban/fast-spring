@@ -25,6 +25,9 @@ theme:
   name: material
   features:
     - navigation.top
+    - navigation.instant
+    - navigation.tabs
+    - navigation.sections
 markdown_extensions:
   - pymdownx.superfences
 extra:
@@ -42,7 +45,20 @@ repo_name: hyoban/fast-spring
 plugins:
   - git-revision-date-localized:
       enable_creation_date: true
+      type: timeago
   - search
 
 extra_css:
   - stylesheets/extra.css
+
+nav:
+  - 欢迎:
+    - index.md
+    - first-steps.md
+  - 请求和回应:
+    - req-res/path-params.md
+    - req-res/query-params.md
+    - req-res/body.md
+    - req-res/cookie.md
+  - 交互式文档:
+    - swagger/schema-extra.md
