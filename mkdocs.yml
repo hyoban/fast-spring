@@ -49,12 +49,15 @@ plugins:
 
 nav:
   - 欢迎:
-    - index.md
-    - first-steps.md
+      - index.md
+      - first-steps.md
   - 请求和回应:
-    - req-res/path-params.md
-    - req-res/query-params.md
-    - req-res/body.md
-    - req-res/cookie.md
+      - req-res/path-params.md
+      - req-res/query-params.md
+      - req-res/body.md
+      - req-res/cookie.md
   - 交互式文档:
-    - swagger/schema-extra.md
+      - swagger/schema-extra.md
+  - 数据库:
+      - Spring Data JPA:
+          - 入门: database/jpa.md
