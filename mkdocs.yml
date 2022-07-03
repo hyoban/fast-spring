@@ -45,11 +45,7 @@ repo_name: hyoban/fast-spring
 plugins:
   - git-revision-date-localized:
       enable_creation_date: true
-      type: timeago
   - search
-
-extra_css:
-  - stylesheets/extra.css
 
 nav:
   - 欢迎:
