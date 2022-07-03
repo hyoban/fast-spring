@@ -3,11 +3,14 @@ package cc.hyoban.fastspring.fast.demo;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +67,7 @@ public class Controller {
 
   // 03 query-params
   @GetMapping("/items")
-  public List<Map<String, String>> readItem(
+  public Map<String, Object> readItems(
     @Parameter(
       description = "Query string for the items to search in the database that have a good match",
       deprecated = true,
@@ -84,8 +87,10 @@ public class Controller {
     @RequestParam(defaultValue = "10") Integer limit,
     @RequestParam(defaultValue = "foo,bar") List<String> q
   ) {
-    System.out.println(q);
-    return fakeItemsDb.subList(skip, skip + limit > fakeItemsDb.size() ? fakeItemsDb.size() : limit);
+    Map<String, Object> result = new HashMap<>();
+    result.put("items", fakeItemsDb.subList(skip, skip + limit > fakeItemsDb.size() ? fakeItemsDb.size() : limit));
+    result.put("q", q);
+    return result;
   }
 
   // 04 body
@@ -98,4 +103,19 @@ public class Controller {
     return item;
   }
 
+  @GetMapping("/cookie-header")
+  public ResponseEntity<Object> cookieAndHeader(
+    @CookieValue(
+      value = "username",
+      defaultValue = "Hyoban"
+    ) String username,
+    @RequestHeader HttpHeaders headers
+  ) {
+    HttpHeaders responseHeaders = new HttpHeaders();
+    responseHeaders.set("my-header", "my-header-value");
+    return ResponseEntity
+      .ok()
+      .headers(responseHeaders)
+      .body(Map.of("username", username, "header", headers));
+  }
 }
